@@ -54,6 +54,8 @@
 #include <fstream>
 #include <csignal>
 
+#include "realm/signal_handlers.h"
+
 #if defined(REALM_ON_LINUX) || defined(REALM_ON_MACOS) || defined(REALM_ON_FREEBSD)
 #include <unistd.h>
 #include <signal.h>
@@ -2001,6 +2003,9 @@ namespace Realm {
       signaled_threads = 0;
       signal(SIGTERM, deadlock_catch);
       signal(SIGINT, deadlock_catch);
+#else
+      // Register signal handlers for clean termination that flush logs
+      register_termination_signal_handlers();
 #endif
       const char *realm_freeze_env = getenv("REALM_FREEZE_ON_ERROR");
       const char *legion_freeze_env = getenv("LEGION_FREEZE_ON_ERROR"); 
@@ -2688,6 +2693,11 @@ namespace Realm {
 	shutdown_initiated = true;
 	shutdown_condvar.broadcast();
       }
+      
+      // Unregister signal handlers during shutdown to avoid issues if runtime is reinitialized
+#ifndef DEADLOCK_TRACE
+      unregister_termination_signal_handlers();
+#endif
     }
 
     int RuntimeImpl::wait_for_shutdown(void)

@@ -78,6 +78,7 @@ list(APPEND REALM_SRC
   realm/rsrv_impl.h         realm/rsrv_impl.cc
   realm/runtime_impl.h      realm/runtime_impl.cc
   realm/sampling_impl.h     realm/sampling_impl.cc
+  realm/signal_handlers.h   realm/signal_handlers.cc
   realm/subgraph_impl.h     realm/subgraph_impl.cc
   realm/tasks.h             realm/tasks.cc
   realm/threads.h           realm/threads.cc
