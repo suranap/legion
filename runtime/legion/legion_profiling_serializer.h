@@ -169,6 +169,7 @@ namespace Legion {
       void serialize(const LegionProfInstance::CopyInfo&);
       void serialize(const LegionProfInstance::FillInfo&);
       void serialize(const LegionProfInstance::InstTimelineInfo&);
+      virtual void serialize_name(const char *name) = 0;
       void serialize(const LegionProfInstance::PartitionInfo&);
       void serialize(const LegionProfInstance::MapperCallInfo&);
       void serialize(const LegionProfInstance::RuntimeCallInfo&);

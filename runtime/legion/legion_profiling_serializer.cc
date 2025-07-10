@@ -448,7 +448,8 @@ namespace Legion {
          << "create:timestamp_t:"  << sizeof(timestamp_t) << delim
          << "ready:timestamp_t:"  << sizeof(timestamp_t) << delim
          << "destroy:timestamp_t:" << sizeof(timestamp_t) << delim
-         << "creator:unsigned long long:" << sizeof(LgEvent)
+          << "creator:unsigned long long:" << sizeof(LgEvent) << delim
+          << "name:string:" << "-1"
          << "}" << std::endl;
 
       ss << "PartitionInfo {"
@@ -1269,6 +1270,10 @@ namespace Legion {
                 sizeof(inst_timeline_info.destroy));
       lp_fwrite(f, (char*)&(inst_timeline_info.creator),
                 sizeof(inst_timeline_info.creator));
+    if (inst_timeline_info.name != NULL)
+      lp_fwrite(f, inst_timeline_info.name, strlen(inst_timeline_info.name) + 1);
+    else
+      lp_fwrite(f, "", 1); // Empty string for NULL name
     }
 
     //--------------------------------------------------------------------------
@@ -2304,11 +2309,12 @@ namespace Legion {
     //--------------------------------------------------------------------------
     {
       log_prof.print("Prof Inst Timeline " IDFMT " " IDFMT " " IDFMT 
-                     " %llu %llu %llu %llu %llu",
+                     " %llu %llu %llu %llu %llu %s",
          inst_timeline_info.inst_uid.id, inst_timeline_info.inst_id,
          inst_timeline_info.mem_id, inst_timeline_info.size,
          inst_timeline_info.op_id, inst_timeline_info.create,
-         inst_timeline_info.ready, inst_timeline_info.destroy);
+         inst_timeline_info.ready, inst_timeline_info.destroy,
+         inst_timeline_info.name == NULL ? "" : inst_timeline_info.name);
     }
 
     //--------------------------------------------------------------------------

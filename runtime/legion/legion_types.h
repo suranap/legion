@@ -1664,6 +1664,7 @@ namespace Legion {
       PHYSICAL_TRACE_EXECUTE_CALL,
       PHYSICAL_TRACE_PRECONDITION_CHECK_CALL,
       PHYSICAL_TRACE_OPTIMIZE_CALL,
+      ASSIGN_NAME_CALL,
       LAST_RUNTIME_CALL_KIND, // This one must be last
     };
 
@@ -1896,6 +1897,7 @@ namespace Legion {
       "Physical Trace Execute",                                       \
       "Physical Trace Precondition Check",                            \
       "Physical Trace Optimize",                                      \
+      "Assign Name",                                                  \
     };
 
     enum SemanticInfoKind {

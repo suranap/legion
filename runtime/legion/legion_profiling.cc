@@ -20,6 +20,7 @@
 #include "legion/legion_context.h"
 #include "legion/legion_profiling.h"
 #include "legion/legion_profiling_serializer.h"
+#include "legion/legion_instances.h"
 #include "realm/id.h" // need this for synthesizing implicit proc IDs
 
 #include <string.h>
@@ -1321,7 +1322,16 @@ namespace Legion {
       info.ready = timeline.ready_time;
       info.destroy = timeline.delete_time;
       info.creator = prof_info->creator;
-      owner->update_footprint(sizeof(InstTimelineInfo), this);
+      // Find the physical manager to get the name
+      // This is a bit hacky, but we can get the PhysicalManager
+      // by looking it up in the runtime's instance_managers map
+      // using the instance ID.
+      PhysicalManager *manager = owner->runtime->find_physical_manager(usage.instance.id);
+      if (manager != NULL && manager->name != NULL)
+        info.name = strdup(manager->name);
+      else
+        info.name = NULL;
+      owner->update_footprint(sizeof(InstTimelineInfo) + (info.name == NULL ? 0 : strlen(info.name) + 1), this);
     }
 
     //--------------------------------------------------------------------------

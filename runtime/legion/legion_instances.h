@@ -333,7 +333,8 @@ namespace Legion {
                       InstanceKind kind, const ReductionOp *op = NULL,
                       CollectiveMapping *collective_mapping = NULL,
                       ApEvent producer_event = ApEvent::NO_AP_EVENT,
-                      GarbageCollectionState init = COLLECTABLE_GC_STATE);
+                      GarbageCollectionState init = COLLECTABLE_GC_STATE,
+                      const char* instance_name = NULL);
       PhysicalManager(const PhysicalManager &rhs) = delete;
       virtual ~PhysicalManager(void);
     public:
@@ -508,6 +509,8 @@ namespace Legion {
       const ReductionOpID redop; 
       const void *const piece_list;
       const size_t piece_list_size;
+    public:
+      char *name;
     public:
       PhysicalInstance instance;
       // Event that needs to trigger before we can start using

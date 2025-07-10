@@ -30661,6 +30661,28 @@ namespace Legion {
     }
 
     //--------------------------------------------------------------------------
+    void Runtime::assign_name(PhysicalInstance inst, const char *name_str)
+    //--------------------------------------------------------------------------
+    {
+      DETAILED_PROFILER(this, ASSIGN_NAME_CALL);
+      PhysicalManager *manager = find_physical_manager(inst.get_id());
+      if (manager != NULL)
+      {
+        // If we already had a name, free it
+        if (manager->name != NULL)
+          free(manager->name);
+        manager->name = strdup(name_str);
+      }
+      else
+      {
+        REPORT_LEGION_WARNING(LEGION_WARNING_INVALID_INSTANCE_ASSIGN_NAME,
+                              "assign_name called on an invalid instance "
+                              IDFMT ". Name '%s' will be ignored.",
+                              inst.get_id(), name_str);
+      }
+    }
+
+    //--------------------------------------------------------------------------
     void Runtime::process_message_task(const void *args, size_t arglen)
     //--------------------------------------------------------------------------
     {

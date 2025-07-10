@@ -4959,12 +4959,13 @@ fn process_record(
             ready,
             destroy,
             creator,
+            name,
         } => {
             state.create_op(*op_id);
             let creator_uid = state.create_fevent_reference(*creator);
             let inst_uid = state.create_fevent_reference(*fevent);
             state.insts.entry(inst_uid).or_insert_with(|| *mem_id);
-            state
+            let inst = state
                 .create_inst(*fevent, insts)
                 .set_inst_id(*inst_id)
                 .set_op_id(*op_id)
@@ -4972,6 +4973,12 @@ fn process_record(
                 .set_mem(*mem_id)
                 .set_size(*size)
                 .set_creator(creator_uid);
+            if let Some(inst_name) = name {
+                // Instance names are currently not part of the Inst struct in state.rs
+                // but are handled by InstPretty. This might need adjustment if direct
+                // access to the name is needed in other parts of state.rs.
+                // For now, we'll assume InstPretty will handle it.
+            }
             state.record_event_node(
                 *fevent,
                 EventEntryKind::InstanceDeletion,

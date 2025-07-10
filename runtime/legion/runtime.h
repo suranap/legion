@@ -3275,6 +3275,9 @@ namespace Legion {
       static ProjectionFunctor* get_projection_functor(ProjectionID pid);
       void unregister_projection_functor(ProjectionID pid);
     public:
+      // Method for assigning names to instances
+      void assign_name(PhysicalInstance instance, const char *name);
+    public:
       ShardingID generate_dynamic_sharding_id(bool check_context = true);
       ShardingID generate_library_sharding_ids(const char *name, size_t count);
       static ShardingID& get_current_static_sharding_id(void);

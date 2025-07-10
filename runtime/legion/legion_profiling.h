@@ -467,6 +467,7 @@ namespace Legion {
         UniqueID op_id; // creator op for the instance
         timestamp_t create, ready, destroy;
         LgEvent creator;
+         const char *name;
       };
       struct PartitionInfo {
       public:
