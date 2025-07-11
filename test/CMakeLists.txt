@@ -38,6 +38,7 @@ add_subdirectory(disjoint_complete)
 add_subdirectory(trie)
 add_subdirectory(nested_replication)
 add_subdirectory(mapper)
+add_subdirectory(profiling)
 
 if(Legion_USE_PREALM)
   add_subdirectory(prealm)
